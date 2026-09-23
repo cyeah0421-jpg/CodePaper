@@ -1,0 +1,17 @@
+{
+  "name": "zhixing-study-assistant",
+  "private": true,
+  "scripts": {
+    "vendor": "node scripts/vendor.cjs",
+    "test": "node --test tests/frontend.test.cjs",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "@highlightjs/cdn-assets": "11.11.1",
+    "dompurify": "3.3.1",
+    "marked": "16.4.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}

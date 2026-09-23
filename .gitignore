@@ -1,0 +1,9 @@
+.env
+__pycache__/
+.pytest_cache/
+*.py[cod]
+sessions/
+node_modules/
+.npm-cache/
+test-results/
+playwright-report/

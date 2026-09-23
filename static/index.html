@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>知行助手 · 从理解到实践</title>
+    <link rel="stylesheet" href="/static/vendor/highlight.css">
+    <link rel="stylesheet" href="/static/app.css">
+    <script defer src="/static/vendor/marked.js"></script>
+    <script defer src="/static/vendor/purify.min.js"></script>
+    <script defer src="/static/vendor/highlight.min.js"></script>
+    <script defer src="/static/stream.js"></script>
+    <script defer src="/static/app.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar-left" id="sessionSidebar">
+            <a class="brand" href="/" aria-label="知行助手首页">
+                <span class="brand-mark">知</span>
+                <span><strong>知行助手</strong><small>从理解到实践</small></span>
+            </a>
+            <div class="new-session">
+                <label for="newMode">开启一段学习</label>
+                <select id="newMode">
+                    <option value="code">代码导师</option>
+                    <option value="paper">论文阅读</option>
+                    <option value="review">复习教练</option>
+                </select>
+                <button id="btnNewSession" class="primary">＋ 新建会话</button>
+            </div>
+            <div class="section-label"><span>学习记录</span><span id="sessionCount">0</span></div>
+            <nav id="recordsList" class="records-list" aria-label="学习会话"></nav>
+            <div class="sidebar-footer"><span class="status-dot"></span>个人学习工作台 <span class="version">V1</span></div>
+        </aside>
+
+        <main class="chat-main">
+            <header class="chat-header">
+                <button id="btnMenu" class="icon-button mobile-only" aria-label="展开会话列表" aria-expanded="false" aria-controls="sessionSidebar">☰</button>
+                <div class="header-info">
+                    <span id="modeBadge" class="badge">代码导师</span>
+                    <h1 id="sessionName">今天，想弄懂什么？</h1>
+                </div>
+                <div class="header-actions">
+                    <button id="btnRename" class="quiet" disabled>重命名</button>
+                    <button id="btnDelete" class="quiet danger" disabled>删除</button>
+                </div>
+            </header>
+            <div id="notice" class="notice" role="status" hidden></div>
+            <section id="chatMessages" class="chat-messages" aria-label="对话记录"></section>
+            <div class="composer">
+                <div id="generationStatus" class="generation-status" role="status"></div>
+                <form id="chatForm" class="input-wrapper">
+                    <label class="sr-only" for="chatInput">消息内容</label>
+                    <textarea id="chatInput" rows="3" maxlength="24000" placeholder="粘贴代码、报错信息，或说说你想学习的概念…"></textarea>
+                    <div class="input-toolbar">
+                        <span id="inputHint">Enter 发送 · Shift + Enter 换行</span>
+                        <button id="btnSend" type="submit" class="primary">发送 ↑</button>
+                    </div>
+                </form>
+                <p class="composer-note">理解一个概念，实践一个例子。AI 的回答需要结合资料核对。</p>
+            </div>
+        </main>
+
+        <aside class="sidebar-right">
+            <div class="section-label">学习指南 <span>✦</span></div>
+            <div class="guide-symbol" id="guideSymbol">&lt;/&gt;</div>
+            <h2 id="guideTitle">代码导师</h2>
+            <p id="guideDescription"></p>
+            <div class="guide-divider"></div>
+            <h3>从一个好问题开始</h3>
+            <div id="suggestions" class="suggestions"></div>
+            <div class="learning-tip"><span>学习小建议</span><p id="learningTip"></p></div>
+            <p class="scope-note" id="scopeNote"></p>
+        </aside>
+    </div>
+    <dialog id="renameDialog">
+        <form id="renameForm">
+            <h2>重命名会话</h2>
+            <label for="renameInput">会话名称</label>
+            <input id="renameInput" maxlength="60" required autocomplete="off">
+            <div class="dialog-actions">
+                <button type="button" id="cancelRename" class="quiet">取消</button>
+                <button type="submit" class="primary">保存</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="deleteDialog">
+        <form id="deleteForm">
+            <h2>删除这段会话？</h2>
+            <p>会话记录将从本地删除，无法在应用内恢复。</p>
+            <div class="dialog-actions">
+                <button type="button" id="cancelDelete" class="quiet">取消</button>
+                <button type="submit" class="primary delete-confirm">删除会话</button>
+            </div>
+        </form>
+    </dialog>
+</body>
+</html>
