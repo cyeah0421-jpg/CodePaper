@@ -6,22 +6,26 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+
+# 定位项目根目录，确保配置文件的相对路径正确
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 @dataclass(frozen=True)
 class Settings:
+    # API 密钥
     api_key: str = ""
-    base_url: str = "https://api.deepseek.com"
-    model: str = "deepseek-v4-pro"
-    timeout: float = 90.0
+    # 基础 URL
+    base_url: str = ""
+    # 模型名称
+    model: str = ""
+    # 超时时间
+    # 会话目录
     sessions_dir: Path = PROJECT_ROOT / "sessions"
-    static_dir: Path = PROJECT_ROOT / "static"
+    # 静态文件目录
 
     @classmethod
     def from_env(cls) -> "Settings":
-        # 优先使用当前项目 .env；没有时兼容原项目上层的 .env。
-        # shell 中已有变量优先，load_dotenv 不覆盖它们。
         for directory in (PROJECT_ROOT, *PROJECT_ROOT.parents):
             candidate = directory / ".env"
             if candidate.is_file():
@@ -31,8 +35,8 @@ class Settings:
         if timeout <= 0 or not timeout < float("inf"):
             raise ValueError("LLM_TIMEOUT 必须是有限正数")
         return cls(
-            api_key=(os.getenv("LLM_API_KEY") or os.getenv("DEEPSEEK_API_KEY") or "").strip(),
-            base_url=os.getenv("LLM_BASE_URL", "https://api.deepseek.com").strip(),
-            model=os.getenv("LLM_MODEL", "deepseek-v4-pro").strip(),
+            api_key=(os.getenv("ZHIPU_API_KEY") or "").strip(),
+            base_url=os.getenv("ZHIPU_API_URL", "https://open.bigmodel.cn/api/paas/v4/").strip(),
+            model=os.getenv("ZHIPU_MODEL", "glm-5.3").strip(),
             timeout=timeout,
         )
