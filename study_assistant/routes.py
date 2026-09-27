@@ -32,27 +32,27 @@ def prepare(store, model, session_id: str, payload: ChatRequest):
         raise HTTPException(413, "当前会话过长，请新建会话并粘贴所需上下文")
     return session, messages
 
-
+# 会话管理
 @router.get("/sessions")
 async def list_sessions(request: Request):
     store, _ = services(request)
     items, warnings = store.list()
     return ApiResponse(data=items, message="；".join(warnings) if warnings else "成功")
 
-
+# 创建会话
 @router.post("/sessions")
 async def create_session(request: Request, payload: CreateSession | None = None):
     store, _ = services(request)
     payload = payload or CreateSession()
     return ApiResponse(data=store.summary(store.create(payload.mode, payload.name)))
 
-
+# 获取会话信息
 @router.get("/sessions/{session_id}")
 async def get_session(session_id: str, request: Request):
     store, _ = services(request)
     return ApiResponse(data=store.read(session_id))
 
-
+# 重命名会话
 @router.patch("/sessions/{session_id}")
 async def rename_session(session_id: str, payload: RenameSession, request: Request):
     store, _ = services(request)
@@ -62,7 +62,7 @@ async def rename_session(session_id: str, payload: RenameSession, request: Reque
         store.save(session)
     return ApiResponse(data=store.summary(session))
 
-
+# 删除会话
 @router.delete("/sessions/{session_id}")
 async def delete_session(session_id: str, request: Request):
     store, _ = services(request)
@@ -73,7 +73,7 @@ async def delete_session(session_id: str, request: Request):
         path.unlink()
     return ApiResponse(message="会话已删除")
 
-
+# 聊天
 @router.post("/sessions/{session_id}/messages")
 async def chat(session_id: str, payload: ChatRequest, request: Request):
     store, model = services(request)
@@ -88,11 +88,11 @@ async def chat(session_id: str, payload: ChatRequest, request: Request):
         store.append_turn(session, payload.message, answer)
     return ApiResponse(data=answer)
 
-
+# 事件
 def event(name: str, data: dict) -> str:
     return f"event: {name}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
 
-
+# 聊天流
 @router.post("/sessions/{session_id}/messages/stream")
 async def chat_stream(session_id: str, payload: ChatRequest, request: Request):
     store, model = services(request)
