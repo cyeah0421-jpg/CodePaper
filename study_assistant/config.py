@@ -26,6 +26,7 @@ class Settings:
     # 静态文件目录
     static_dir: Path = PROJECT_ROOT / "static"
 
+
     @classmethod
     def from_env(cls) -> "Settings":
         for directory in (PROJECT_ROOT, *PROJECT_ROOT.parents):
